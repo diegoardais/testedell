@@ -89,18 +89,18 @@ async function exibirMenu() {
 
 async function questaoUm() {
   const origem = await rl.question('Qual a cidade de origem? ');
-  const cidadePartida = origem.toUpperCase();
+  cidadePartida = origem.toUpperCase();
   const name = await rl.question('Qual a cidade de destino? ');
-  const cidadeDestino = name.toUpperCase();
+  cidadeDestino = name.toUpperCase();
   const caminhao = await rl.question(
     'Qual o tipo de caminhao? [PEQUENO-MEDIO-GRANDE] '
   );
-  const tipoCaminhao = caminhao.toUpperCase();
+  tipoCaminhao = caminhao.toUpperCase();
   await consultarTrecho();
 }
 
 async function consultarTrecho() {
-  const distancia = await dadosJson[cidadePartida][cidadeDestino];
+  const distancia = dadosJson[cidadePartida][cidadeDestino];
   let precoKm;
   switch (tipoCaminhao) {
     case 'PEQUENO':
@@ -128,11 +128,11 @@ async function consultarTrecho() {
 
 async function questaoDois() {
   const origem = await rl.question('Qual a cidade de origem? ');
-  const cidadePartida = origem.toUpperCase();
+  cidadePartida = origem.toUpperCase();
   const name = await rl.question('Qual a cidade de destino? ');
-  const cidadeDestino = name.toUpperCase();
+  cidadeDestino = name.toUpperCase();
   const parada = await rl.question('Qual a cidade de parada? ');
-  const cidadeParada = parada.toUpperCase();
+  cidadeParada = parada.toUpperCase();
   cadastrarItem();
 }
 
@@ -148,7 +148,6 @@ async function cadastrarItem() {
   let opcao = await rl.question(
     'Digite o numero correspondente ao item que deseja adicionar: '
   );
-  console.log(opcao);
 
   while (opcao !== '') {
     switch (opcao) {
@@ -302,8 +301,8 @@ function calcularPesoParada() {
 }
 
 async function cadastrarTransporte() {
-  const distancia = await dadosJson[cidadePartida][cidadeParada];
-  const distancia2 = await dadosJson[cidadeParada][cidadeDestino];
+  const distancia = dadosJson[cidadePartida][cidadeParada];
+  const distancia2 = dadosJson[cidadeParada][cidadeDestino];
   const distanceTotal = distancia + distancia2;
 
   let numGrande = 0;
@@ -395,4 +394,4 @@ async function cadastrarTransporte() {
   await exibirMenu();
 }
 
-await exibirMenu();
+exibirMenu();
