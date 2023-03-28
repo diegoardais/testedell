@@ -123,17 +123,14 @@ async function consultarTrecho() {
   exibirMenu();
 }
 
-function questaoDois() {
-  rl.question('Qual a cidade de origem? ', origem => {
-    cidadePartida = origem.toUpperCase();
-    rl.question('Qual a cidade de destino? ', name => {
-      cidadeDestino = name.toUpperCase();
-      rl.question('Qual a cidade de parada? ', parada => {
-        cidadeParada = parada.toUpperCase();
-        cadastrarItem();
-      });
-    });
-  });
+async function questaoDois() {
+  const origem = await rl.question('Qual a cidade de origem? ');
+  const cidadePartida = origem.toUpperCase();
+  const name = await rl.question('Qual a cidade de destino? ');
+  const cidadeDestino = name.toUpperCase();
+  const parada = await rl.question('Qual a cidade de parada? ');
+  const cidadeParada = parada.toUpperCase();
+  cadastrarItem();
 }
 
 function cadastrarItem() {
@@ -395,4 +392,4 @@ async function cadastrarTransporte() {
   await exibirMenu();
 }
 
-exibirMenu();
+// await exibirMenu();
