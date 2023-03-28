@@ -1,6 +1,9 @@
 const dadosJson = require('./distancias.json');
-const readline = require('readline');
+const readline = require('node:readline/promises');
 const readlineSync = require('readline-sync');
+// import dadosJson from './distancias.json' assert { type: 'json' };
+// import readline from 'node:readline/promises';
+// import readlineSync from 'readline-sync';
 
 let cidadePartida = '';
 let cidadeDestino = '';
@@ -93,7 +96,7 @@ async function questaoUm() {
     'Qual o tipo de caminhao? [PEQUENO-MEDIO-GRANDE] '
   );
   const tipoCaminhao = caminhao.toUpperCase();
-  consultarTrecho();
+  await consultarTrecho();
 }
 
 async function consultarTrecho() {
@@ -133,7 +136,7 @@ async function questaoDois() {
   cadastrarItem();
 }
 
-function cadastrarItem() {
+async function cadastrarItem() {
   console.log('\nEscolha os itens: ');
   console.log('1 - [Celular]: ');
   console.log('2 - [Geladeira]: ');
@@ -142,7 +145,7 @@ function cadastrarItem() {
   console.log('5 - [Luminária]: ');
   console.log('6 - [Lavadora de roupa]: ');
 
-  let opcao = readlineSync.question(
+  let opcao = await rl.question(
     'Digite o numero correspondente ao item que deseja adicionar: '
   );
   console.log(opcao);
@@ -197,19 +200,19 @@ function cadastrarItem() {
     );
     console.log(opcao);
   }
-  calcularPesoTotal();
-  descarregarItem();
-  cadastrarTransporte();
+  await calcularPesoTotal();
+  await descarregarItem();
+  await cadastrarTransporte();
 }
 
-function calcularPesoTotal() {
+async function calcularPesoTotal() {
   for (const item of itens) {
     pesoTotal += item.peso;
   }
   return pesoTotal;
 }
 
-function descarregarItem() {
+async function descarregarItem() {
   console.log('\nEscolha os itens para descarregar na primeira parada: ');
   console.log('1 - [Celular]: ');
   console.log('2 - [Geladeira]: ');
@@ -218,7 +221,7 @@ function descarregarItem() {
   console.log('5 - [Luminária]: ');
   console.log('6 - [Lavadora de roupa]: ');
 
-  let opcao = readlineSync.question(
+  let opcao = await readlineSync.question(
     '\nDigite o numero correspondente ao item que deseja descarregar: '
   );
   console.log(opcao);
@@ -392,4 +395,4 @@ async function cadastrarTransporte() {
   await exibirMenu();
 }
 
-// await exibirMenu();
+await exibirMenu();
