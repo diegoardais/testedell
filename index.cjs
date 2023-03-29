@@ -89,14 +89,18 @@ async function exibirMenu() {
 
 async function questaoUm() {
   const origem = await rl.question('Qual a cidade de origem? ');
-  cidadePartida = origem.toUpperCase();
+  cidadePartida = removerAcentos(origem.toUpperCase());
   const name = await rl.question('Qual a cidade de destino? ');
-  cidadeDestino = name.toUpperCase();
+  cidadeDestino = removerAcentos(name.toUpperCase());
   const caminhao = await rl.question(
     'Qual o tipo de caminhao? [PEQUENO-MEDIO-GRANDE] '
   );
-  tipoCaminhao = caminhao.toUpperCase();
+  tipoCaminhao = removerAcentos(caminhao.toUpperCase());
   await consultarTrecho();
+}
+
+function removerAcentos(str) {
+  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
 async function consultarTrecho() {
