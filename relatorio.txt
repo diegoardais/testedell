@@ -1,0 +1,16 @@
+
+      Transporte:
+      Cidade de Partida: PORTO ALEGRE,
+      Cidade de Destino: CURITIBA,
+      Cidade de Parada: FLORIANOPOLIS,
+      Custo Total: R$55615.92,
+      Custo Trecho até a Parada: R$2318.12,
+      Custo Trecho Final: R$53297.80,
+      Custo Médio por km: R$71.67,
+      Custo Médio por tipo de produto: R$18538.64,
+      Custo Total para Caminhão Grande: R$27807.96
+      Custo Total para Caminhão Medio: R$55615.92
+      Custo Total para Caminhão Pequeno: R$27807.96,
+      Numero Total de veículos: 5.00,
+      Total de itens transportados: 501
+      -------------------------------

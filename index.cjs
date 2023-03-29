@@ -132,11 +132,11 @@ async function consultarTrecho() {
 
 async function questaoDois() {
   const origem = await rl.question('Qual a cidade de origem? ');
-  cidadePartida = origem.toUpperCase();
+  cidadePartida = removerAcentos(origem.toUpperCase());
   const name = await rl.question('Qual a cidade de destino? ');
-  cidadeDestino = name.toUpperCase();
+  cidadeDestino = removerAcentos(name.toUpperCase());
   const parada = await rl.question('Qual a cidade de parada? ');
-  cidadeParada = parada.toUpperCase();
+  cidadeParada = removerAcentos(parada.toUpperCase());
   cadastrarItem();
 }
 
@@ -221,7 +221,7 @@ async function cadastrarItem() {
 
 async function calcularPesoTotal() {
   for (const item of itens) {
-    pesoTotal += await item.peso;
+    pesoTotal += +item.peso;
   }
   return pesoTotal;
 }
@@ -284,7 +284,7 @@ async function descarregarItem() {
       case '6':
         let qtdLav1 = await rl.question('Qual a quantidade? ');
         qtdParada += +qtdLav1;
-        itens.push({
+        itensParada.push({
           nome: 'LAVADORA DE ROUPA',
           peso: item['LAVADORA DE ROUPA'].peso * qtdLav1,
         });
@@ -294,16 +294,15 @@ async function descarregarItem() {
         break;
     }
     opcao = await rl.question(
-      'Digite o numero correspondente ao proximo item que deseja adicionar (ou pressione enter para finalizar): '
+      'Digite o numero correspondente ao proximo item que deseja descarregar (ou pressione enter para finalizar): '
     );
-    console.log(opcao);
   }
   calcularPesoParada();
 }
 
 async function calcularPesoParada() {
   for (const item of itensParada) {
-    pesoParada += await item.peso;
+    pesoParada += +item.peso;
   }
   return pesoParada;
 }
@@ -369,7 +368,7 @@ async function cadastrarTransporte() {
   }
 
   if (pesoTotal != 0) {
-    // calcula o custo do transporte
+    // Calula o do transporte total e do primeiro trecho
     const custoTotal2 =
       numGrande2 * caminhoes.GRANDE.custo_por_km * distancia +
       numMedio2 * caminhoes.MEDIO.custo_por_km * distancia +
@@ -403,20 +402,22 @@ async function cadastrarTransporte() {
       Cidade de Partida: ${cidadePartida},
       Cidade de Destino: ${cidadeDestino},
       Cidade de Parada: ${cidadeParada},
-      Custo Total: ${custoTotal.toFixed(2)},
-      Custo Trecho até a Parada: ${custoTotal2.toFixed(2)},
-      Custo Trecho Final: ${(custoTotal - custoTotal2).toFixed(2)},
-      Custo Médio por km: ${(custoTotal / distanceTotal).toFixed(2)},
-      Custo Médio por tipo de produto: ${(custoTotal / tipoProduto).toFixed(2)},
-      Custo Total para Caminhão Grande: ${(
+      Custo Total: R$${custoTotal.toFixed(2)},
+      Custo Trecho até a Parada: R$${custoTotal2.toFixed(2)},
+      Custo Trecho Final: R$${(custoTotal - custoTotal2).toFixed(2)},
+      Custo Médio por km: R$${(custoTotal / distanceTotal).toFixed(2)},
+      Custo Médio por tipo de produto: R$${(custoTotal / tipoProduto).toFixed(
+        2
+      )},
+      Custo Total para Caminhão Grande: R$${(
         custoTotal /
         (numGrande + numGrande2)
       ).toFixed(2)}
-      Custo Total para Caminhão Medio: ${(
+      Custo Total para Caminhão Medio: R$${(
         custoTotal /
         (numMedio + numMedio2)
       ).toFixed(2)}
-      Custo Total para Caminhão Pequeno: ${(
+      Custo Total para Caminhão Pequeno: R$${(
         custoTotal /
         (numPequeno + numPequeno2)
       ).toFixed(2)},
