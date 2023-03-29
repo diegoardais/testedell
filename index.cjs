@@ -1,9 +1,6 @@
 const dadosJson = require('./distancias.json');
 const readline = require('node:readline/promises');
-const readlineSync = require('readline-sync');
-// import dadosJson from './distancias.json' assert { type: 'json' };
-// import readline from 'node:readline/promises';
-// import readlineSync from 'readline-sync';
+const fs = require('fs');
 
 let cidadePartida = '';
 let cidadeDestino = '';
@@ -15,6 +12,9 @@ let itens = [];
 let itensParada = [];
 let qtdTotal = 0;
 let qtdParada = 0;
+let tipoProduto = 0;
+let qtdCaminhoes = 0;
+let qtdCaminhoes2 = 0;
 
 const caminhoes = {
   PEQUENO: {
@@ -153,44 +153,50 @@ async function cadastrarItem() {
     switch (opcao) {
       case '1':
         let qtdCel = await rl.question('Qual a quantidade? ');
-        // let qtdCel = readlineSync.questionInt('Qual a quantidade? ');
-        // console.log(qtdCel);
-        qtdTotal += qtdCel;
+        qtdTotal += +qtdCel;
+        if (qtdCel > 0) {
+          tipoProduto++;
+        }
         itens.push({ nome: 'CELULAR', peso: item.CELULAR.peso * qtdCel });
         break;
       case '2':
         let qtdGel = await rl.question('Qual a quantidade? ');
-        // let qtdGel = readlineSync.questionInt('Qual a quantidade? ');
-        // console.log(qtdGel);
-        qtdTotal += qtdGel;
+        qtdTotal += +qtdGel;
+        if (qtdGel > 0) {
+          tipoProduto++;
+        }
         itens.push({ nome: 'GELADEIRA', peso: item.GELADEIRA.peso * qtdGel });
         break;
       case '3':
         let qtdFree = await rl.question('Qual a quantidade? ');
-        // let qtdFree = readlineSync.questionInt('Qual a quantidade? ');
-        // console.log(qtdFree);
-        qtdTotal += qtdFree;
+        qtdTotal += +qtdFree;
+        if (qtdFree > 0) {
+          tipoProduto++;
+        }
         itens.push({ nome: 'FREEZER', peso: item.FREEZER.peso * qtdFree });
         break;
       case '4':
         let qtdCad = await rl.question('Qual a quantidade? ');
-        // let qtdCad = readlineSync.questionInt('Qual a quantidade? ');
-        // console.log(qtdCad);
-        qtdTotal += qtdCad;
+        qtdTotal += +qtdCad;
+        if (qtdCad > 0) {
+          tipoProduto++;
+        }
         itens.push({ nome: 'CADEIRA', peso: item.CADEIRA.peso * qtdCad });
         break;
       case '5':
         let qtdLum = await rl.question('Qual a quantidade? ');
-        // let qtdLum = readlineSync.questionInt('Qual a quantidade? ');
-        // console.log(qtdLum);
-        qtdTotal += qtdLum;
+        qtdTotal += +qtdLum;
+        if (qtdLum > 0) {
+          tipoProduto++;
+        }
         itens.push({ nome: 'LUMINARIA', peso: item.LUMINARIA.peso * qtdLum });
         break;
       case '6':
         let qtdLav = await rl.question('Qual a quantidade? ');
-        // let qtdLav = readlineSync.questionInt('Qual a quantidade? ');
-        // console.log(qtdLav);
-        qtdTotal += qtdLav;
+        qtdTotal += +qtdLav;
+        if (qtdLav > 0) {
+          tipoProduto++;
+        }
         itens.push({
           nome: 'LAVADORA DE ROUPA',
           peso: item['LAVADORA DE ROUPA'].peso * qtdLav,
@@ -203,10 +209,6 @@ async function cadastrarItem() {
     opcao = await rl.question(
       'Digite o numero correspondente ao proximo item que deseja adicionar (ou pressione enter para finalizar): '
     );
-    // opcao = readlineSync.question(
-    //   'Digite o numero correspondente ao proximo item que deseja adicionar (ou pressione enter para finalizar): '
-    // );
-    // console.log(opcao);
   }
   await calcularPesoTotal();
   await descarregarItem();
@@ -230,20 +232,14 @@ async function descarregarItem() {
   console.log('6 - [Lavadora de roupa]: ');
 
   let opcao = await rl.question(
-    '\nDigite o numero correspondente ao item que deseja descarregar: '
+    '\nDigite o numero correspondente ao item que deseja descarregar (ou pressione enter para finalizar): '
   );
-  // let opcao = await readlineSync.question(
-  //   '\nDigite o numero correspondente ao item que deseja descarregar: '
-  // );
-  // console.log(opcao);
 
   while (opcao !== '') {
     switch (opcao) {
       case '1':
         let qtdCel1 = await rl.question('Qual a quantidade? ');
-        // let qtdCel1 = readlineSync.questionInt('Qual a quantidade? ');
-        // console.log(qtdCel1);
-        qtdParada += qtdCel1;
+        qtdParada += +qtdCel1;
         itensParada.push({
           nome: 'CELULAR',
           peso: item.CELULAR.peso * qtdCel1,
@@ -251,9 +247,7 @@ async function descarregarItem() {
         break;
       case '2':
         let qtdGel1 = await rl.question('Qual a quantidade? ');
-        // let qtdGel1 = readlineSync.questionInt('Qual a quantidade? ');
-        // console.log(qtdGel1);
-        qtdParada += qtdGel1;
+        qtdParada += +qtdGel1;
         itensParada.push({
           nome: 'GELADEIRA',
           peso: item.GELADEIRA.peso * qtdGel1,
@@ -261,9 +255,7 @@ async function descarregarItem() {
         break;
       case '3':
         let qtdFree1 = await rl.question('Qual a quantidade? ');
-        // let qtdFree1 = readlineSync.questionInt('Qual a quantidade? ');
-        // console.log(qtdFree1);
-        qtdParada += qtdFree1;
+        qtdParada += +qtdFree1;
         itensParada.push({
           nome: 'FREEZER',
           peso: item.FREEZER.peso * qtdFree1,
@@ -271,9 +263,7 @@ async function descarregarItem() {
         break;
       case '4':
         let qtdCad1 = await rl.question('Qual a quantidade? ');
-        // let qtdCad1 = readlineSync.questionInt('Qual a quantidade? ');
-        // console.log(qtdCad1);
-        qtdParada += qtdCad1;
+        qtdParada += +qtdCad1;
         itensParada.push({
           nome: 'CADEIRA',
           peso: item.CADEIRA.peso * qtdCad1,
@@ -281,9 +271,7 @@ async function descarregarItem() {
         break;
       case '5':
         let qtdLum1 = await rl.question('Qual a quantidade? ');
-        // let qtdLum1 = readlineSync.questionInt('Qual a quantidade? ');
-        // console.log(qtdLum1);
-        qtdParada += qtdLum1;
+        qtdParada += +qtdLum1;
         itensParada.push({
           nome: 'LUMINARIA',
           peso: item.LUMINARIA.peso * qtdLum1,
@@ -291,9 +279,7 @@ async function descarregarItem() {
         break;
       case '6':
         let qtdLav1 = await rl.question('Qual a quantidade? ');
-        // let qtdLav1 = readlineSync.questionInt('Qual a quantidade? ');
-        // console.log(qtdLav1);
-        qtdParada += qtdLav1;
+        qtdParada += +qtdLav1;
         itens.push({
           nome: 'LAVADORA DE ROUPA',
           peso: item['LAVADORA DE ROUPA'].peso * qtdLav1,
@@ -306,9 +292,6 @@ async function descarregarItem() {
     opcao = await rl.question(
       'Digite o numero correspondente ao proximo item que deseja adicionar (ou pressione enter para finalizar): '
     );
-    // opcao = readlineSync.question(
-    //   'Digite o numero correspondente ao proximo item que deseja adicionar (ou pressione enter para finalizar): '
-    // );
     console.log(opcao);
   }
   calcularPesoParada();
@@ -339,38 +322,46 @@ async function cadastrarTransporte() {
   // Peso PARADA
   if (pesoParada >= caminhoes.GRANDE.capacidade) {
     numGrande2 = Math.floor(pesoParada / caminhoes.GRANDE.capacidade);
+    qtdCaminhoes += numGrande2;
     resto2 = pesoTotal % caminhoes.GRANDE.capacidade;
   }
   if (resto2 >= caminhoes.MEDIO.capacidade) {
     numMedio2 = Math.floor(resto2 / caminhoes.MEDIO.capacidade);
+    qtdCaminhoes += numMedio2;
     resto2 = resto2 % caminhoes.MEDIO.capacidade;
   }
 
   if (resto2 >= caminhoes.PEQUENO.capacidade) {
     numPequeno2 = Math.floor(resto2 / caminhoes.PEQUENO.capacidade);
+    qtdCaminhoes += numPequeno2;
   }
 
   if (resto2 < caminhoes.PEQUENO.capacidade && resto2 != 0) {
     numPequeno2++;
+    qtdCaminhoes += numPequeno2;
   }
   ///////////////////////////////////////////////
   // Peso restante
   if (pesoTotal - pesoParada >= caminhoes.GRANDE.capacidade) {
     numGrande = Math.floor(pesoTotal / caminhoes.GRANDE.capacidade);
+    qtdCaminhoes2 += numGrande;
     resto = (pesoTotal - pesoParada) % caminhoes.GRANDE.capacidade;
   }
 
   if (resto >= caminhoes.MEDIO.capacidade) {
     numMedio = Math.floor(resto / caminhoes.MEDIO.capacidade);
+    qtdCaminhoes2 += numMedio;
     resto = resto % caminhoes.MEDIO.capacidade;
   }
 
   if (resto >= caminhoes.PEQUENO.capacidade) {
     numPequeno = Math.floor(resto / caminhoes.PEQUENO.capacidade);
+    qtdCaminhoes2 += numPequeno;
   }
 
   if (resto < caminhoes.PEQUENO.capacidade && resto != 0) {
     numPequeno++;
+    qtdCaminhoes2 += numPequeno;
   }
 
   if (pesoTotal != 0) {
@@ -403,6 +394,32 @@ async function cadastrarTransporte() {
         (qtdTotal - qtdParada)
       ).toFixed(2)}`
     );
+    let dadosGravados = `
+      Transporte:
+      Cidade de Partida: ${cidadePartida},
+      Cidade de Destino: ${cidadeDestino},
+      Cidade de Parada: ${cidadeParada},
+      Custo Total: ${custoTotal.toFixed(2)},
+      Custo Trecho até a Parada: ${custoTotal2.toFixed(2)},
+      Custo Trecho Final: ${(custoTotal - custoTotal2).toFixed(2)},
+      Custo Médio por km: ${(custoTotal / distanceTotal).toFixed(2)},
+      Custo Médio por tipo de produto: ${(custoTotal / tipoProduto).toFixed(2)},
+      Custo Total para Caminhão Grande: ${(
+        custoTotal /
+        (numGrande + numGrande2)
+      ).toFixed(2)}
+      Custo Total para Caminhão Medio: ${(
+        custoTotal /
+        (numMedio + numMedio2)
+      ).toFixed(2)}
+      Custo Total para Caminhão Pequeno: ${(
+        custoTotal /
+        (numPequeno + numPequeno2)
+      ).toFixed(2)},
+      Numero Total de veículos: ${(qtdCaminhoes + qtdCaminhoes2).toFixed(2)},
+      Total de itens transportados: ${qtdTotal}
+      -------------------------------`;
+    await save(dadosGravados);
   } else {
     console.log(
       `Não há caminhões disponíveis para transportar ${pesoTotal} kg de ${itens
@@ -413,6 +430,27 @@ async function cadastrarTransporte() {
     );
   }
   await exibirMenu();
+}
+
+async function questaoTres() {
+  fs.readFile('relatorio.txt', 'utf-8', (err, data) => {
+    if (err) {
+      console.log(err);
+      return;
+    } else {
+      console.log(data);
+      exibirMenu();
+    }
+  });
+}
+
+async function save(content) {
+  fs.appendFile('relatorio.txt', content, err => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+  });
 }
 
 exibirMenu();
